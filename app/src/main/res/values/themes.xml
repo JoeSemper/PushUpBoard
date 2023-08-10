@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.PushUpBoard" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.PushUpBoard" parent="android:Theme.Material.Light.NoActionBar" >
+        <item name="android:statusBarColor">@color/purple_700</item>
+    </style>
+
+    <style name="Theme.AnimatedSplashScreen" parent="Theme.PushUpBoard">
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="android:statusBarColor" >@color/primary_color</item>
+    </style>
+
+    <style name="Theme.AppSplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.AnimatedSplashScreen</item>
+    </style>
+
 </resources>
