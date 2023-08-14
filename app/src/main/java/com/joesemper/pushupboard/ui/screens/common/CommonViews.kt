@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.joesemper.pushupboard.ui.theme.GreenColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,7 +64,7 @@ fun PagerIndicator(
                 animateColorAsState(
                     targetValue = when {
                         (currentPage == iteration) -> MaterialTheme.colorScheme.secondary
-                        (currentPage > iteration) -> GreenColor
+//                        (currentPage > iteration) -> GreenColor
                         else -> MaterialTheme.colorScheme.secondary
                     }, label = ""
                 )

@@ -2,7 +2,8 @@
 <resources>
 
     <style name="Theme.PushUpBoard" parent="android:Theme.Material.Light.NoActionBar" >
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.AnimatedSplashScreen" parent="Theme.PushUpBoard">

@@ -12,7 +12,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joesemper.pushupboard.ui.theme.GreenColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +33,6 @@ fun WorkoutScreenTopBar(
             Icon(
                 modifier = Modifier.size(32.dp),
                 imageVector = if (isWorkoutComplete) Icons.Default.Done else Icons.Default.Lock,
-                tint = GreenColor,
                 contentDescription = null
             )
         }
