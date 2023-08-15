@@ -6,8 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -44,7 +46,8 @@ fun HomeScreen(
             HomeScreenContent(
                 modifier = Modifier.padding(padding),
                 state = state,
-                onWorkoutItemClick = { navController.navigate("workout/${it}") }
+                onWorkoutItemClick = { navController.navigate("workout/${it}") },
+                onClick = viewModel::updateDates
             )
 
         }
@@ -55,7 +58,8 @@ fun HomeScreen(
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     state: HomeScreenState,
-    onWorkoutItemClick: (Int) -> Unit
+    onWorkoutItemClick: (Int) -> Unit,
+    onClick: () -> Unit
 ) {
     AnimatedVisibility(visible = !state.isLoading) {
 
@@ -65,6 +69,12 @@ fun HomeScreenContent(
 
             item {
                 ProgressListItem(progress = state.programProgress)
+            }
+
+            item {
+                Button(onClick = onClick) {
+                    Text(text = "Update")
+                }
             }
 
             items(count = state.workouts.size) { columnId ->

@@ -18,5 +18,7 @@ interface WorkoutProgramRepository {
     fun getWorkoutWithSetsById(workoutId: Int): Flow<Workout>
     suspend fun updateWorkoutCompleteStatus(workoutId: Int, isComplete: Boolean)
     suspend fun updateWorkoutSetRepsDone(workoutSetId: Int, repsDone: Int)
+    suspend fun updateDatesForProgram(programId: Int, newDates: List<Long>)
+    suspend fun getWorkoutsCountInProgram(programId: Int): Int
 
 }

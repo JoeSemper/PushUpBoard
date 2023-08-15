@@ -1,7 +1,18 @@
 package com.joesemper.pushupboard.di
 
-import com.joesemper.pushupboard.domain.use_case.*
-import org.koin.androidx.compose.get
+import com.joesemper.pushupboard.domain.use_case.GetAllWorkoutProgramsUseCase
+import com.joesemper.pushupboard.domain.use_case.GetCurrentProgramIdUseCase
+import com.joesemper.pushupboard.domain.use_case.GetWorkoutByIdUseCase
+import com.joesemper.pushupboard.domain.use_case.GetWorkoutProgramByIdUseCase
+import com.joesemper.pushupboard.domain.use_case.GetWorkoutProgramSelectStatusUseCase
+import com.joesemper.pushupboard.domain.use_case.GetWorkoutSetsForWorkoutUseCase
+import com.joesemper.pushupboard.domain.use_case.GetWorkoutsForProgramUseCase
+import com.joesemper.pushupboard.domain.use_case.InitiateDatabaseUseCase
+import com.joesemper.pushupboard.domain.use_case.SetCurrentWorkoutProgramIdUseCase
+import com.joesemper.pushupboard.domain.use_case.SetWorkoutProgramSelectStatusUseCase
+import com.joesemper.pushupboard.domain.use_case.UpdateWorkoutCompleteStatusUseCase
+import com.joesemper.pushupboard.domain.use_case.UpdateWorkoutDatesForProgramUseCase
+import com.joesemper.pushupboard.domain.use_case.UpdateWorkoutSetRepsDoneUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -29,4 +40,5 @@ val useCaseModule = module {
         )
     }
     factory { SetWorkoutProgramSelectStatusUseCase(settingsDataStore = get()) }
+    factory { UpdateWorkoutDatesForProgramUseCase(workoutProgramRepository = get()) }
 }

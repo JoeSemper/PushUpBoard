@@ -26,6 +26,9 @@ interface WorkoutProgramDao {
     @Query("SELECT * FROM Workouts WHERE program_id = :programId")
     fun getWorkoutsForProgram(programId: Int): Flow<List<DatabaseWorkout>>
 
+    @Query("SELECT * FROM Workouts WHERE program_id = :programId")
+    suspend fun getWorkoutsListForProgram(programId: Int): List<DatabaseWorkout>
+
     @Query("SELECT * FROM WorkoutSets WHERE workout_id = :workoutId")
     fun getWorkoutSetsForWorkout(workoutId: Int): Flow<List<DatabaseWorkoutSet>>
 
@@ -86,5 +89,8 @@ interface WorkoutProgramDao {
 
     @Query("UPDATE WorkoutSets SET exercise_reps_done = :repsDone WHERE workout_set_id =:workoutSetId")
     suspend fun updateWorkoutSetRepsDone(workoutSetId: Int, repsDone: Int)
+
+    @Query("UPDATE Workouts SET date = :dale WHERE workout_id =:workoutId")
+    suspend fun updateWorkoutDate(workoutId: Int, dale: Long)
 
 }

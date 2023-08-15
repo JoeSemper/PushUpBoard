@@ -9,13 +9,16 @@ import com.joesemper.pushupboard.domain.entity.WorkoutWithMuscleGroups
 import com.joesemper.pushupboard.domain.use_case.GetCurrentProgramIdUseCase
 import com.joesemper.pushupboard.domain.use_case.GetWorkoutProgramByIdUseCase
 import com.joesemper.pushupboard.domain.use_case.GetWorkoutsForProgramUseCase
+import com.joesemper.pushupboard.domain.use_case.UpdateWorkoutDatesForProgramUseCase
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getWorkoutsForProgram: GetWorkoutsForProgramUseCase,
     private val getWorkoutProgramById: GetWorkoutProgramByIdUseCase,
-    private val getCurrentProgramId: GetCurrentProgramIdUseCase
+    private val getCurrentProgramId: GetCurrentProgramIdUseCase,
+    private val updateWorkoutDatesForProgram: UpdateWorkoutDatesForProgramUseCase
 ) : ViewModel() {
 
     var homeState by mutableStateOf(HomeScreenState())
@@ -50,8 +53,19 @@ class HomeViewModel(
 
     private fun calculateProgress(workouts: List<WorkoutWithMuscleGroups>) = ProgramProgress(
         totalWorkouts = workouts.size,
-        workoutsDone = workouts.filter { it.isComplete }.size
+        workoutsDone = workouts.filter { it.isComplete }.size,
+        percentProgress = if (workouts.isNotEmpty()) {
+            ((workouts.filter { it.isComplete }.size.toFloat() / workouts.size) * 100).toInt()
+        } else {
+            0
+        }
     )
+
+    fun updateDates() {
+        viewModelScope.launch {
+            updateWorkoutDatesForProgram(getCurrentProgramId().first())
+        }
+    }
 
 }
 
@@ -68,5 +82,6 @@ data class HomeTopBarState(
 
 data class ProgramProgress(
     val workoutsDone: Int = 0,
-    val totalWorkouts: Int = 0
+    val totalWorkouts: Int = 0,
+    val percentProgress: Int = 0
 )

@@ -1,12 +1,20 @@
 package com.joesemper.pushupboard.data.repository
 
-import com.joesemper.pushupboard.data.datasourse.converters.*
+import com.joesemper.pushupboard.data.datasourse.converters.prepopulatedExerciseToDatabaseExercise
+import com.joesemper.pushupboard.data.datasourse.converters.prepopulatedMuscleGroupToDatabaseMuscleGroup
+import com.joesemper.pushupboard.data.datasourse.converters.prepopulatedProgramToDatabaseProgram
+import com.joesemper.pushupboard.data.datasourse.converters.prepopulatedWorkoutSetToDatabaseWorkoutSet
+import com.joesemper.pushupboard.data.datasourse.converters.prepopulatedWorkoutToDatabaseWorkout
+import com.joesemper.pushupboard.data.datasourse.converters.toProgram
+import com.joesemper.pushupboard.data.datasourse.converters.toWorkout
+import com.joesemper.pushupboard.data.datasourse.converters.toWorkoutSet
+import com.joesemper.pushupboard.data.datasourse.converters.workoutsWithMuscleGroupsMapToEntity
 import com.joesemper.pushupboard.data.datasourse.room.main.dao.WorkoutProgramDao
-import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseWorkoutWithWorkoutSets
 import com.joesemper.pushupboard.data.datasourse.room.prepopulated.dao.PrepopulatedProgramDao
-import com.joesemper.pushupboard.domain.entity.*
+import com.joesemper.pushupboard.domain.entity.Program
 import com.joesemper.pushupboard.domain.repository.WorkoutProgramRepository
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.koin.java.KoinJavaComponent.inject
 
 
@@ -72,6 +80,18 @@ class WorkoutProgramRepositoryImpl(
 
     override suspend fun updateWorkoutSetRepsDone(workoutSetId: Int, repsDone: Int) {
         workoutProgramDao.updateWorkoutSetRepsDone(workoutSetId = workoutSetId, repsDone = repsDone)
+    }
+
+    override suspend fun updateDatesForProgram(programId: Int, newDates: List<Long>) {
+        workoutProgramDao.getWorkoutsListForProgram(programId)
+            .sortedBy { it.dayInProgram }
+            .forEachIndexed { i, workout ->
+                workoutProgramDao.updateWorkoutDate(workout.workoutId, newDates[i])
+            }
+    }
+
+    override suspend fun getWorkoutsCountInProgram(programId: Int): Int {
+        return workoutProgramDao.getWorkoutsListForProgram(programId).count()
     }
 
 }

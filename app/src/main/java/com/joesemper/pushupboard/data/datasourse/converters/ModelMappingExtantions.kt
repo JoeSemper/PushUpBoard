@@ -1,9 +1,25 @@
 package com.joesemper.pushupboard.data.datasourse.converters
 
 import com.joesemper.pushupboard.R
-import com.joesemper.pushupboard.data.datasourse.room.main.entity.*
-import com.joesemper.pushupboard.data.datasourse.room.prepopulated.entity.*
-import com.joesemper.pushupboard.domain.entity.*
+import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseMuscleGroup
+import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseProgram
+import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseWorkout
+import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseWorkoutExercise
+import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseWorkoutExerciseWithMuscleGroup
+import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseWorkoutSet
+import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseWorkoutSetWithExercise
+import com.joesemper.pushupboard.data.datasourse.room.main.entity.DatabaseWorkoutWithWorkoutSets
+import com.joesemper.pushupboard.data.datasourse.room.prepopulated.entity.PrepopulatedMuscleGroup
+import com.joesemper.pushupboard.data.datasourse.room.prepopulated.entity.PrepopulatedProgram
+import com.joesemper.pushupboard.data.datasourse.room.prepopulated.entity.PrepopulatedWorkout
+import com.joesemper.pushupboard.data.datasourse.room.prepopulated.entity.PrepopulatedWorkoutExercise
+import com.joesemper.pushupboard.data.datasourse.room.prepopulated.entity.PrepopulatedWorkoutSet
+import com.joesemper.pushupboard.domain.entity.MuscleGroup
+import com.joesemper.pushupboard.domain.entity.Program
+import com.joesemper.pushupboard.domain.entity.Workout
+import com.joesemper.pushupboard.domain.entity.WorkoutExercise
+import com.joesemper.pushupboard.domain.entity.WorkoutSet
+import com.joesemper.pushupboard.domain.entity.WorkoutWithMuscleGroups
 
 fun prepopulatedWorkoutToDatabaseWorkout(prepopulatedWorkout: PrepopulatedWorkout) =
     with(prepopulatedWorkout) {
@@ -66,7 +82,7 @@ fun DatabaseProgram.toProgram() = Program(
 fun DatabaseWorkout.toWorkout() = Workout(
     workoutId = workoutId,
     programId = programId,
-    date = date,
+    date = millisecondsToDateString(date),
     dayInProgram = dayInProgram,
 )
 
@@ -103,7 +119,7 @@ fun DatabaseMuscleGroup.toMuscleGroup() = MuscleGroup(
 fun DatabaseWorkoutWithWorkoutSets.toWorkout() = Workout(
     workoutId = databaseWorkout.workoutId,
     programId = databaseWorkout.programId,
-    date = databaseWorkout.date,
+    date = millisecondsToDateString(databaseWorkout.date),
     dayInProgram = databaseWorkout.dayInProgram,
     isComplete = databaseWorkout.isComplete,
     workoutSets = databaseWorkoutSets.map { it.toWorkoutSet() }
@@ -115,7 +131,7 @@ fun workoutsWithMuscleGroupsMapToEntity(map: Map<DatabaseWorkout, Set<DatabaseMu
         WorkoutWithMuscleGroups(
             workoutId = pair.first.workoutId,
             programId = pair.first.programId,
-            date = pair.first.date,
+            date = millisecondsToDateString(pair.first.date),
             dayInProgram = pair.first.dayInProgram,
             isComplete = pair.first.isComplete,
             muscleGroups = pair.second.map { it.toMuscleGroup() }.toSet()

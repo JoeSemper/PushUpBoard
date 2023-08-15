@@ -65,7 +65,7 @@ fun WorkoutListItem(
                 ) {
                     Column {
                         Text(
-                            text = "21.06.2023",
+                            text = state.date,
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
@@ -129,15 +129,15 @@ fun ProgressListItem(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
+                    Spacer(modifier = Modifier.size(0.dp))
+                    Text(
+                        text = "${progress.percentProgress}%",
+                        style = MaterialTheme.typography.displaySmall
+                    )
                     Text(
                         text = "Progress",
                         style = MaterialTheme.typography.labelSmall
                     )
-                    Text(
-                        text = "60%",
-                        style = MaterialTheme.typography.displaySmall
-                    )
-                    Spacer(modifier = Modifier.size(0.dp))
                 }
             }
         }
@@ -159,15 +159,16 @@ fun ProgressListItem(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
+                    Icon(imageVector = Icons.Outlined.ThumbUp, contentDescription = null)
+                    Text(
+                        text = "1234",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+
                     Text(
                         text = "Total push ups",
                         style = MaterialTheme.typography.labelSmall
                     )
-                    Text(
-                        text = "1234",
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                    Icon(imageVector = Icons.Outlined.ThumbUp, contentDescription = null)
                 }
             }
         }
@@ -189,15 +190,15 @@ fun ProgressListItem(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "Calories",
-                        style = MaterialTheme.typography.labelSmall
-                    )
+                    Icon(imageVector = Icons.Outlined.FavoriteBorder, contentDescription = null)
                     Text(
                         text = "1234",
                         style = MaterialTheme.typography.labelLarge
                     )
-                    Icon(imageVector = Icons.Outlined.FavoriteBorder, contentDescription = null)
+                    Text(
+                        text = "Calories",
+                        style = MaterialTheme.typography.labelSmall
+                    )
                 }
 
             }
