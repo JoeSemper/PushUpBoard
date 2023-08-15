@@ -1,19 +1,20 @@
 package com.joesemper.pushupboard.ui.screens.home
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,7 +52,7 @@ fun WorkoutListItem(
                 ) {
                     Text(
                         text = "${state.dayInProgram}",
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
 
@@ -62,10 +63,17 @@ fun WorkoutListItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "21.06.2032",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    Column {
+                        Text(
+                            text = "21.06.2023",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text(
+                            text = "Workout",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+
 
                     Row() {
                         state.muscleGroups.forEach {
@@ -84,15 +92,10 @@ fun WorkoutListItem(
                         .size(32.dp),
                     imageVector = if (state.isComplete) Icons.Default.Done else Icons.Default.Lock,
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.secondary
                 )
 
             }
-
-//            Divider(
-//                modifier = Modifier
-//                    .padding(start = 64.dp)
-//                    .fillMaxWidth()
-//            )
         }
     }
 }
@@ -102,51 +105,103 @@ fun ProgressListItem(
     modifier: Modifier = Modifier,
     progress: ProgramProgress
 ) {
-    Box(
+    LazyRow(
         modifier = modifier
-            .fillMaxWidth()
-            .height(150.dp),
-        contentAlignment = Alignment.Center
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        contentPadding = PaddingValues(vertical = 16.dp)
     ) {
-
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Surface(
+        item {
+            Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.6f),
-            ) {
-            }
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.4f),
-            ) {
-            }
-        }
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            elevation = CardDefaults.cardElevation()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "Push up beginner")
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    progress = (progress.workoutsDone.toFloat() / progress.totalWorkouts.toFloat())
+                    .size(128.dp)
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                 )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 8.dp, horizontal = 4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Progress",
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                    Text(
+                        text = "60%",
+                        style = MaterialTheme.typography.displaySmall
+                    )
+                    Spacer(modifier = Modifier.size(0.dp))
+                }
             }
         }
 
+        item {
+            Card(
+                modifier = Modifier
+                    .size(128.dp)
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 8.dp, horizontal = 4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Total push ups",
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                    Text(
+                        text = "1234",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Icon(imageVector = Icons.Outlined.ThumbUp, contentDescription = null)
+                }
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier
+                    .size(128.dp)
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 8.dp, horizontal = 4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Calories",
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                    Text(
+                        text = "1234",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Icon(imageVector = Icons.Outlined.FavoriteBorder, contentDescription = null)
+                }
+
+            }
+        }
     }
 
 }
@@ -158,26 +213,6 @@ fun HomeScreenTopBar(
     state: HomeTopBarState,
     onIconClick: () -> Unit
 ) {
-
-//    val backgroundColor = animateColorAsState(
-//        targetValue = if (state.reverseColors) {
-//            MaterialTheme.colorScheme.background
-//        } else {
-//            MaterialTheme.colorScheme.primary
-//        }, label = ""
-//    )
-//
-//    val contentColor = animateColorAsState(
-//        targetValue = if (state.reverseColors) {
-//            MaterialTheme.colorScheme.onBackground
-//        } else {
-//            MaterialTheme.colorScheme.onPrimary
-//        }, label = ""
-//    )
-
-//    val elevation = animateDpAsState(
-//        targetValue = if (state.applyElevation) 8.dp else 0.dp, label = ""
-//    )
 
     TopAppBar(
         modifier = modifier,
@@ -209,9 +244,7 @@ fun RoundedIcon(
 ) {
     Surface(
         modifier = modifier.size(32.dp),
-        color = MaterialTheme.colorScheme.secondary,
         shape = RoundedCornerShape(32.dp),
-        border = BorderStroke(width = 0.5.dp, color = MaterialTheme.colorScheme.primary)
     ) {
         Icon(
             modifier = Modifier

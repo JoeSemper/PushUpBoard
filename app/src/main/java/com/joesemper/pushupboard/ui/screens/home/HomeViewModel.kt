@@ -48,18 +48,6 @@ class HomeViewModel(
         }
     }
 
-    fun onListScroll(hasScrollOffset: Boolean) {
-        homeState = homeState.copy(
-            topBarState = homeState.topBarState.copy(applyElevation = hasScrollOffset)
-        )
-    }
-
-    fun onFirstListItemVisibilityChange(isFirstItemVisible: Boolean) {
-        homeState = homeState.copy(
-            topBarState = homeState.topBarState.copy(reverseColors = isFirstItemVisible)
-        )
-    }
-
     private fun calculateProgress(workouts: List<WorkoutWithMuscleGroups>) = ProgramProgress(
         totalWorkouts = workouts.size,
         workoutsDone = workouts.filter { it.isComplete }.size
@@ -75,8 +63,6 @@ data class HomeScreenState(
 )
 
 data class HomeTopBarState(
-    val applyElevation: Boolean = false,
-    val reverseColors: Boolean = false,
     val title: String = ""
 )
 
