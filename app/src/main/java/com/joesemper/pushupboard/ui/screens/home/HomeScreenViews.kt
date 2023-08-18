@@ -8,28 +8,28 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.joesemper.pushupboard.domain.entity.WorkoutWithMuscleGroups
 
 @Composable
 fun WorkoutListItem(
     modifier: Modifier = Modifier,
-    state: WorkoutWithMuscleGroups
+    state: WorkoutItemState
 ) {
     Card(
         modifier = modifier,
@@ -51,7 +51,7 @@ fun WorkoutListItem(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "${state.dayInProgram}",
+                        text = "${state.workout.dayInProgram}",
                         style = MaterialTheme.typography.bodyLarge,
                     )
                 }
@@ -65,7 +65,7 @@ fun WorkoutListItem(
                 ) {
                     Column {
                         Text(
-                            text = state.date,
+                            text = state.workout.date,
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
@@ -76,7 +76,7 @@ fun WorkoutListItem(
 
 
                     Row() {
-                        state.muscleGroups.forEach {
+                        state.workout.muscleGroups.forEach {
                             RoundedIcon(
                                 modifier = Modifier.padding(horizontal = 4.dp),
                                 iconRes = it.muscleGroupResId,
@@ -90,9 +90,17 @@ fun WorkoutListItem(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .size(32.dp),
-                    imageVector = if (state.isComplete) Icons.Default.Done else Icons.Default.Lock,
+                    imageVector = when {
+                        state.workout.isComplete -> Icons.Default.Done
+                        state.isNext -> Icons.Default.PlayArrow
+                        else -> Icons.Default.Lock
+                    },
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.secondary
+                    tint = when {
+                        state.workout.isComplete -> MaterialTheme.colorScheme.secondary
+                        state.isNext -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.outlineVariant
+                    }
                 )
 
             }
@@ -215,12 +223,11 @@ fun HomeScreenTopBar(
     onIconClick: () -> Unit
 ) {
 
-    TopAppBar(
+    CenterAlignedTopAppBar(
         modifier = modifier,
         title = {
             Text(
                 text = state.title,
-                style = MaterialTheme.typography.titleMedium,
             )
         },
         actions = {

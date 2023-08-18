@@ -41,7 +41,15 @@ class HomeViewModel(
                     getWorkoutsForProgram(programId = program.programId).collectLatest { workouts ->
                         homeState = homeState.copy(
                             isLoading = false,
-                            workouts = workouts,
+                            workoutsState = WorkoutsState(
+                                workouts = workouts.map {
+                                    WorkoutItemState(
+                                        workout = it,
+                                        isNext = isWorkoutNext(it.workoutId, workouts)
+                                    )
+                                },
+                                programState = getWorkoutProgramState(workouts)
+                            ),
                             programProgress = calculateProgress(workouts),
                         )
                     }
@@ -67,13 +75,37 @@ class HomeViewModel(
         }
     }
 
+    private fun getWorkoutProgramState(workouts: List<WorkoutWithMuscleGroups>) =
+        when {
+            workouts.none { it.isComplete } -> WorkoutProgramStatus.NotStarted
+            workouts.none { !it.isComplete } -> WorkoutProgramStatus.Complete
+            else -> WorkoutProgramStatus.InProgress
+        }
+
+    private fun isWorkoutNext(
+        workoutId: Int,
+        workouts: List<WorkoutWithMuscleGroups>
+    ): Boolean {
+        return workouts.sortedBy { it.dayInProgram }.find { !it.isComplete }?.workoutId == workoutId
+    }
+
 }
 
 data class HomeScreenState(
     val isLoading: Boolean = true,
-    val workouts: List<WorkoutWithMuscleGroups> = listOf(),
+    val workoutsState: WorkoutsState = WorkoutsState(),
     val topBarState: HomeTopBarState = HomeTopBarState(),
     val programProgress: ProgramProgress = ProgramProgress()
+)
+
+data class WorkoutsState(
+    val workouts: List<WorkoutItemState> = listOf(),
+    val programState: WorkoutProgramStatus = WorkoutProgramStatus.NotSpecified
+)
+
+data class WorkoutItemState(
+    val workout: WorkoutWithMuscleGroups,
+    val isNext: Boolean,
 )
 
 data class HomeTopBarState(
@@ -85,3 +117,10 @@ data class ProgramProgress(
     val totalWorkouts: Int = 0,
     val percentProgress: Int = 0
 )
+
+sealed class WorkoutProgramStatus() {
+    object InProgress : WorkoutProgramStatus()
+    object Complete : WorkoutProgramStatus()
+    object NotStarted : WorkoutProgramStatus()
+    object NotSpecified : WorkoutProgramStatus()
+}

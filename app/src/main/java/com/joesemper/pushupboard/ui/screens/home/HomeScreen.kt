@@ -77,12 +77,12 @@ fun HomeScreenContent(
                 }
             }
 
-            items(count = state.workouts.size) { columnId ->
+            items(count = state.workoutsState.workouts.size) { columnId ->
                 WorkoutListItem(
                     modifier = Modifier
-                        .clickable { onWorkoutItemClick(state.workouts[columnId].workoutId) }
+                        .clickable { onWorkoutItemClick(state.workoutsState.workouts[columnId].workout.workoutId) }
                         .padding(vertical = 8.dp, horizontal = 16.dp),
-                    state = state.workouts[columnId]
+                    state = state.workoutsState.workouts[columnId]
                 )
             }
 
